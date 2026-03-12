@@ -172,4 +172,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Author
 
-momta
+Juan M.
