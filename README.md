@@ -105,7 +105,40 @@ while(Wire_available()) {
 
 ---
 
-## Quick Start
+## Supporting Files
+
+These files are required for the PIC to work correctly. They are not part of the Wire library itself but are necessary for any project using it.
+
+### `config.h` — PIC Configuration Bits
+Sets the hardware fuses of the microcontroller. These are programmed once and define how the PIC behaves at a low level:
+
+| Setting | Value | Description |
+|---------|-------|-------------|
+| `FEXTOSC` | `OFF` | External oscillator disabled |
+| `RSTOSC` | `HFINT32` | Internal oscillator at 32 MHz |
+| `MCLRE` | `ON` | Master Clear pin enabled |
+| `BOREN` | `ON` | Brown-out Reset enabled |
+| `WDTE` | `OFF` | Watchdog Timer disabled |
+| `LVP` | `ON` | Low-voltage programming (required for PICkit) |
+| `PPS1WAY` | `OFF` | Allow multiple PPS reconfigurations (required for I2C pin selection) |
+
+> `PPS1WAY = OFF` is critical — without it, the PPS registers can only be written once and pin reassignment would not work.
+
+### `system.h` / `system.c` — System Initialization
+Configures the internal oscillator to run at 32 MHz and sets up the GPIO pins used in the project.
+
+```c
+void SYSTEM_Initialize(void); // Call this first in main()
+
+#define LED_A LATAbits.LATA7  // LED D5 on Curiosity HPC board
+#define LED_B LATAbits.LATA6  // LED D4 on Curiosity HPC board
+```
+
+> Always call `SYSTEM_Initialize()` before `Wire_begin()` in your `main()`.
+
+---
+
+
 
 ```c
 #include "system.h"
@@ -172,4 +205,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Author
 
-Juan M.
+momta
